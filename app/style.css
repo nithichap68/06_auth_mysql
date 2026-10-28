@@ -1,0 +1,329 @@
+/* app/style.css — ธีมเกมบล็อกพิกเซลสำหรับทุกหน้า (ใช้ markup เดิมจาก AuthScene) */
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+:root {
+  --pixel: "Press Start 2P", "Courier New", monospace;
+  --sky: #7ec8f5;
+  --stone: #c6c6c6;
+  --stone-dark: #555;
+  --ink: #3b3b3b;
+  --green: #5ea63a;
+  --green-light: #9be06f;
+  --green-dark: #2c5a15;
+  --buddy: #7b5cff;
+  --buddy-light: #9a82ff;
+  --buddy-dark: #5b3fe0;
+  --error: #b30000;
+}
+
+* {
+  box-sizing: border-box;
+  image-rendering: pixelated;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--sky);
+  color: #fff;
+  font-family: var(--pixel);
+  line-height: 1.6;
+}
+
+/* เมฆพิกเซล */
+body::before {
+  content: "";
+  position: fixed;
+  top: 70px;
+  left: 8%;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  z-index: -1;
+  box-shadow:
+    16px 0 #fff, 32px 0 #fff, 48px 0 #fff, 64px 0 #fff,
+    16px -16px #fff, 32px -16px #fff, 48px -16px #fff,
+    32px -32px #fff,
+    55vw 48px #fff, calc(55vw + 16px) 48px #fff, calc(55vw + 32px) 48px #fff,
+    calc(55vw + 48px) 48px #fff, calc(55vw + 16px) 32px #fff,
+    calc(55vw + 32px) 32px #fff;
+}
+
+/* พื้นหญ้า + ดิน */
+body::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 96px;
+  z-index: -1;
+  border-top: 4px solid #2f5f17;
+  background:
+    linear-gradient(to bottom, #5fb02e 0 20px, #3f7d1f 20px 28px, transparent 28px),
+    radial-gradient(#5e4529 3px, transparent 3px) 0 0 / 32px 32px,
+    repeating-linear-gradient(90deg, #8a6a45 0 16px, #7c5e3c 16px 32px);
+}
+
+.scene {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 20px 130px;
+}
+
+.welcome {
+  margin: 0;
+  font-size: clamp(1.6rem, 8vw, 3rem);
+  font-weight: 400;
+  text-shadow: 4px 4px 0 var(--ink);
+}
+
+.welcome-sub {
+  margin: 14px 0 0;
+  font-size: 0.7rem;
+  text-shadow: 2px 2px 0 var(--ink);
+}
+
+/* ตัวห่อการ์ด + ตัวละคร */
+.auth-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  margin-top: 120px;
+}
+
+/* ===== ตัวละครบล็อกสีม่วง (ตัวละครต้นฉบับ) ===== */
+.buddy {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 4px);
+  width: 112px;
+  height: 104px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.buddy-body {
+  position: absolute;
+  inset: 24px 0 0;
+  background: var(--buddy);
+  box-shadow:
+    inset 8px 8px 0 var(--buddy-light),
+    inset -8px -8px 0 var(--buddy-dark),
+    0 0 0 4px #000;
+  display: grid;
+  place-items: center;
+}
+
+.eye {
+  width: 36px;
+  height: 36px;
+  margin-top: 2px;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 0 4px #000;
+}
+
+.eye i {
+  width: 12px;
+  height: 12px;
+  background: #000;
+  animation: look 4s steps(4) infinite;
+}
+
+@keyframes look {
+  0%, 100% { transform: translateX(0); }
+  30% { transform: translateX(8px); }
+  65% { transform: translateX(-8px); }
+}
+
+.antenna {
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 24px;
+  background: #000;
+}
+
+.antenna::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: -4px;
+  width: 16px;
+  height: 12px;
+  background: #ffcf33;
+  box-shadow: 0 0 0 4px #000;
+}
+
+.antenna.a1 { left: 24px; }
+.antenna.a2 { right: 24px; }
+
+.hand {
+  position: absolute;
+  bottom: -4px;
+  width: 24px;
+  height: 20px;
+  background: var(--buddy);
+  box-shadow: inset 0 -6px 0 var(--buddy-dark), 0 0 0 4px #000;
+  z-index: 1;
+}
+
+.hand.h1 { left: -2px; }
+.hand.h2 { right: -2px; }
+
+/* ===== แผงหิน (การ์ดฟอร์ม) ===== */
+.auth-box,
+.home {
+  position: relative;
+  padding: 24px;
+  background: var(--stone);
+  border: 4px solid;
+  border-color: #fff var(--stone-dark) var(--stone-dark) #fff;
+  box-shadow: 0 0 0 4px #000, 10px 10px 0 4px rgba(0, 0, 0, 0.35);
+  color: var(--ink);
+}
+
+/* กล่องกลางจอ ใช้ได้ทั้ง register / login / logout / dashboard */
+.auth-box {
+  width: 100%;
+  max-width: 380px;
+  margin: 12vh auto 130px;
+}
+
+/* ถ้าอยู่ใน AuthScene ให้ตัวห่อจัดตำแหน่งเอง */
+.auth-wrap .auth-box {
+  margin: 0;
+}
+
+.auth-box > * + * {
+  margin-top: 18px;
+}
+
+.auth-box h1 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.auth-box p {
+  margin: 0;
+  font-size: 0.6rem;
+  line-height: 2;
+}
+
+/* input ที่อยู่ตรงๆ ใน form (ไม่ได้ห่อด้วย .fields) ให้เป็นกล่องดำเว้าเหมือนกัน */
+form > input {
+  border: 4px solid;
+  border-color: #373737 #fff #fff #373737;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ช่องกรอก: กล่องดำเว้าลงไป */
+.fields {
+  border: 4px solid;
+  border-color: #373737 #fff #fff #373737;
+  background: #000;
+}
+
+input {
+  width: 100%;
+  padding: 14px 12px;
+  font-family: var(--pixel);
+  font-size: 0.65rem;
+  color: #fff;
+  background: #000;
+  border: 0;
+  outline: none;
+}
+
+.fields input + input {
+  border-top: 4px solid var(--stone-dark);
+}
+
+input::placeholder {
+  color: #8b8b8b;
+}
+
+input:focus {
+  background: #1a1a2a;
+  box-shadow: inset 0 0 0 2px #fff;
+}
+
+/* ปุ่มสีเขียวแบบบล็อก */
+button {
+  padding: 14px;
+  font-family: var(--pixel);
+  font-size: 0.8rem;
+  color: #fff;
+  text-shadow: 2px 2px 0 var(--green-dark);
+  background: var(--green);
+  border: 4px solid;
+  border-color: var(--green-light) var(--green-dark) var(--green-dark) var(--green-light);
+  box-shadow: 0 0 0 4px #000;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(1.12);
+}
+
+button:active {
+  border-color: var(--green-dark) var(--green-light) var(--green-light) var(--green-dark);
+  transform: translateY(2px);
+}
+
+.auth-footer {
+  margin: 0;
+  text-align: center;
+  font-size: 0.55rem;
+  line-height: 2;
+  color: var(--ink);
+}
+
+.auth-footer a,
+.home a {
+  color: #0b5fd1;
+  text-decoration: none;
+}
+
+.auth-footer a:hover,
+.home a:hover {
+  text-decoration: underline;
+}
+
+/* หน้าแรก (Auth Demo): แผงหินกลางจอ */
+.home {
+  max-width: 360px;
+  margin: 80px auto 130px;
+  font-size: 0.7rem;
+  line-height: 2.2;
+}
+
+.home h1 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.home ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+/* ข้อความแจ้ง error ใต้ฟอร์ม */
+.error {
+  margin: 0;
+  font-size: 0.6rem;
+  line-height: 1.8;
+  color: var(--error);
+}
